@@ -4,49 +4,45 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 import java.util.Timer;
 
-public class Main extends JPanel {
+public class Main extends JPanel implements TickListener {
 
-    class TimerMission extends TimerTask {
-        private ArrayList<Animail> animails = null;
-        public TimerMission(ArrayList<Animail> animails) {
-            this.animails = animails;
-        }
-
-        @Override
-        public void run() {
-            for (Animail animail : animails) {
-                animail.dance();
-            }
-            repaint();
-        }
-    }
-
-    private ArrayList<Animail> redPandas = new ArrayList<>();
-    private ArrayList<Animail> dogs = new ArrayList<>();
+    private ArrayList<RedPanda> redPandas = new ArrayList<>();
+    private ArrayList<Dog> dogs = new ArrayList<>();
     private Timer timer;
     private int speed = 100;
+    private TimerMission tm1 = new TimerMission();
+    private TimerMission tm2 = new TimerMission();
 
     public Main() {
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerMission(redPandas), 0, speed);
-        timer.scheduleAtFixedRate(new TimerMission(dogs), 150, speed + 500);
+        timer.scheduleAtFixedRate(tm1, 0, speed);
+        timer.scheduleAtFixedRate(tm2, 150, speed + 500);
 
         redPandas.add(new RedPanda(30, 30));
         redPandas.add(new RedPanda(230, 230));
         redPandas.add(new RedPanda(90, 100));
+        for (RedPanda rp : redPandas) {
+            tm1.register(rp);
+        }
+        tm1.register(this);
+
         dogs.add(new Dog(200, 100));
         dogs.add(new Dog(300, 50));
         dogs.add(new Dog(400, 400));
+        for (Dog dog : dogs) {
+            tm2.register(dog);
+        }
+        tm2.register(this);
     }
 
     @Override
     public void paintComponents(Graphics g) {
         g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight());
-        for (Animail rp : redPandas) {
+        for (RedPanda rp : redPandas) {
             rp.draw(g);
         }
-        for (Animail dog : dogs) {
+        for (Dog dog : dogs) {
             dog.draw(g);
         }
     }
@@ -60,6 +56,10 @@ public class Main extends JPanel {
         window.setVisible(true);
     }
 
+    @Override
+    public void tick() {
+        repaint();
+    }
 }
 
 

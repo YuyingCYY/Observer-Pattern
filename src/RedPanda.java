@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class RedPanda implements Animail {
+public class RedPanda implements TickListener {
     private Point point;
     private ImageIcon redPadnda = new ImageIcon("redpanda.png");
 
@@ -9,7 +9,6 @@ public class RedPanda implements Animail {
         point = new Point(x, y);
     }
 
-    @Override
     public void dance() {
         int newX = (int) (Math.random() * 10 - 5);
         int newY = (int) (Math.random() * 10 - 5);
@@ -17,8 +16,12 @@ public class RedPanda implements Animail {
         point.y += newY;
     }
 
-    @Override
     public void draw(Graphics g) {
         redPadnda.paintIcon(null, g, point.x, point.y);
+    }
+
+    @Override
+    public void tick() {
+        dance();
     }
 }

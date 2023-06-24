@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Dog implements Animail {
+public class Dog implements TickListener {
     private Point point;
     private ImageIcon dog = new ImageIcon("dog.png");
 
@@ -9,7 +9,6 @@ public class Dog implements Animail {
         point = new Point(x, y);
     }
 
-    @Override
     public void dance() {
         int newX = (int) (Math.random() * 10 - 5);
         int newY = (int) (Math.random() * 10 - 5);
@@ -17,8 +16,12 @@ public class Dog implements Animail {
         point.y += newY;
     }
 
-    @Override
     public void draw(Graphics g) {
         dog.paintIcon(null, g, point.x, point.y);
+    }
+
+    @Override
+    public void tick() {
+        dance();
     }
 }
